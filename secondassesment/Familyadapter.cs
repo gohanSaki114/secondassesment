@@ -4,6 +4,7 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace secondassesment
 {
@@ -16,7 +17,7 @@ namespace secondassesment
         public List<Family> data;
         private MainActivity mainActivity;
 
-      
+
 
         public Familyadapter(List<Family> data, MainActivity mainActivity)
         {
@@ -24,32 +25,32 @@ namespace secondassesment
             this.mainActivity = mainActivity;
         }
 
-      
+
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
 
-            
+
             View itemView = null;
             var id = Resource.Layout.familyrowitem;
             itemView = LayoutInflater.From(parent.Context).
                    Inflate(id, parent, false);
 
-            var vh = new FamilyadapterViewHolder(itemView, OnClick, OnLongClick,deletepressed);
+            var vh = new FamilyadapterViewHolder(itemView, OnClick, OnLongClick, deletepressed);
             return vh;
         }
 
-        
+
         public override void OnBindViewHolder(RecyclerView.ViewHolder viewHolder, int position)
         {
             var item = data[position];
 
-            
+
             var holder = viewHolder as FamilyadapterViewHolder;
             holder.fatherTextView.Text = item.fathername;
             holder.motheTextView.Text = item.mothername;
             holder.AddressTextView.Text = item.Address;
-            holder.childTextView.Text = item.children;
+            holder.childTextView.Text = string.Join(", ", item.Childrens.Select(x => x.childname).ToList());
 
         }
 
@@ -62,7 +63,7 @@ namespace secondassesment
 
     public class FamilyadapterViewHolder : RecyclerView.ViewHolder
     {
-        public TextView fatherTextView, motheTextView,AddressTextView,childTextView;
+        public TextView fatherTextView, motheTextView, AddressTextView, childTextView;
         public ImageButton delete;
 
         public FamilyadapterViewHolder(View itemView, Action<FamilyadapterClickEventArgs> clickListener,
@@ -73,8 +74,8 @@ namespace secondassesment
             AddressTextView = itemView.FindViewById<TextView>(Resource.Id.addressname);
             childTextView = itemView.FindViewById<TextView>(Resource.Id.childname);
             delete = itemView.FindViewById<ImageButton>(Resource.Id.deletebutton);
-            delete.Click += (sender,e) => deletepressed(new FamilyadapterClickEventArgs { View = itemView, Position = AdapterPosition});
-           
+            delete.Click += (sender, e) => deletepressed(new FamilyadapterClickEventArgs { View = itemView, Position = AdapterPosition });
+
 
 
             itemView.LongClick += (sender, e) => longClickListener(new FamilyadapterClickEventArgs { View = itemView, Position = AdapterPosition });
@@ -85,6 +86,6 @@ namespace secondassesment
     {
         public View View { get; set; }
         public int Position { get; set; }
-        
+
     }
 }

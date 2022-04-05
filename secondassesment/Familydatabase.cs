@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using SQLite;
+using SQLiteNetExtensions.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,6 +46,7 @@ namespace secondassesment
             try
             {
                 var created = sqliteConnection.CreateTable<Family>();
+                var create = sqliteConnection.CreateTable<childmodel>();
                 Console.WriteLine("Succefully Table Created!....");
 
             }
@@ -63,8 +65,15 @@ namespace secondassesment
 
             long result = sqliteConnection.Insert(family);
 
+            foreach (childmodel child in family.Childrens)
+            {
+                sqliteConnection.Insert(child);
+            }
+            if (family.Childrens.Count>0)
+                sqliteConnection.UpdateWithChildren(family);
 
 
+            
             if (result == -1)
             {
 
@@ -79,7 +88,7 @@ namespace secondassesment
 
 
         }
-        public bool updatefamily(Family family,int id)
+        public bool updatefamily(Family family, int id)
         {
             family.Id = id;
             long result = sqliteConnection.Update(family);
@@ -105,7 +114,10 @@ namespace secondassesment
         {
             try
             {
-                var FamilyDetails = sqliteConnection.Table<Family>().ToList();
+
+                //var FamilyDetails = sqliteConnection.Table<Family>().ToList();
+                var FamilyDetails = sqliteConnection.GetAllWithChildren<Family>().ToList();
+                
                 return FamilyDetails;
             }
 
@@ -120,7 +132,7 @@ namespace secondassesment
         public Family GetByFamilyId(int familyid)
         {
             var userId = ReadFamily().Where(u => u.Id == familyid).FirstOrDefault();
-           
+
             return userId;
 
         }
@@ -153,4 +165,4 @@ namespace secondassesment
 
 
     }
-    }
+}

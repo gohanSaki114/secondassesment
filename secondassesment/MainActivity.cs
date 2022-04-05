@@ -46,6 +46,15 @@ namespace secondassesment
             sadapter.ItemLongClick += Sadapter_ItemLongClick;
 
         }
+        protected override void OnResume()
+        {
+            base.OnResume();
+            data = Db.ReadFamily();
+            sadapter = new Familyadapter(data, this);
+            
+            myRecycleView.SetAdapter(sadapter);
+            sadapter.ItemLongClick += Sadapter_ItemLongClick;
+        }
 
         private void Sadapter_ItemLongClick(object sender, FamilyadapterClickEventArgs e)
         {

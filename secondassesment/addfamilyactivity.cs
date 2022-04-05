@@ -79,17 +79,17 @@ namespace secondassesment
                 addressedittext.Text = fam.Address;
                 //childeeess.AddRange(fam.children.ToList());
 
-                List<string> childnames = new List<string>();
-                childnames = fam.children.Split(',').ToList();
-                for (int i = 0; i < childnames.Count; i++)
-                {
-                    EditText view = new EditText(this);
-                    view.Id = View.GenerateViewId();
-                    view.Hint = "Enter Child Name";
-                    view.Text = childnames[i];
-                    linearLayout.AddView(view);
-                    allEds.Add(view);
-                }
+                //List<string> childnames = new List<string>();
+                //childnames = fam.children.Split(',').ToList();
+                //for (int i = 0; i < childnames.Count; i++)
+                //{
+                //    EditText view = new EditText(this);
+                //    view.Id = View.GenerateViewId();
+                //    view.Hint = "Enter Child Name";
+                //    view.Text = childnames[i];
+                //    linearLayout.AddView(view);
+                //    allEds.Add(view);
+                //}
 
                 //listofchild.AddRange(fam.children.Split(',').ToList());
 
@@ -114,21 +114,29 @@ namespace secondassesment
             family.mothername = mother;
             family.Address = address;
 
-            List<string> childs = new List<string>();
+           
+            List<childmodel> children = new List<childmodel>(); 
+
+
+           // List<string> childs = new List<string>();
 
             for (int i = 0; i < allEds.Count; i++)
             {
                 if (allEds[i] != null)
                 {
                     string childtext = allEds[i].Text.ToString();
-                    childs.Add(childtext);
+                    childmodel childmod = new childmodel();
+                                       childmod.childname=childtext;
+                    childmod.childId=i+1;
+                    //childs.Add(childtext);
 
-
+                    children.Add(childmod); 
                 }
-                combinedString = string.Join(",", childs);
+                //combinedString = string.Join(",", childs);
 
             }
-            family.children = combinedString;
+            //family.children = combinedString;
+            family.Childrens=children; 
             if (save.Text == "Update")
             {
                 upDateClicked(family);
