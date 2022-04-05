@@ -77,19 +77,20 @@ namespace secondassesment
 
 
                 addressedittext.Text = fam.Address;
+
                 //childeeess.AddRange(fam.children.ToList());
 
-                //List<string> childnames = new List<string>();
-                //childnames = fam.children.Split(',').ToList();
-                //for (int i = 0; i < childnames.Count; i++)
-                //{
-                //    EditText view = new EditText(this);
-                //    view.Id = View.GenerateViewId();
-                //    view.Hint = "Enter Child Name";
-                //    view.Text = childnames[i];
-                //    linearLayout.AddView(view);
-                //    allEds.Add(view);
-                //}
+                List<string> childnames = new List<string>();
+                childnames = fam.Childrens.Select(x=>x.childname).ToList();
+                for (int i = 0; i < childnames.Count; i++)
+                {
+                    EditText view = new EditText(this);
+                    view.Id = View.GenerateViewId();
+                    view.Hint = "Enter Child Name";
+                    view.Text = childnames[i];
+                    linearLayout.AddView(view);
+                    allEds.Add(view);
+                }
 
                 //listofchild.AddRange(fam.children.Split(',').ToList());
 

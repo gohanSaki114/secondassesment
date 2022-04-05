@@ -92,6 +92,12 @@ namespace secondassesment
         {
             family.Id = id;
             long result = sqliteConnection.Update(family);
+            foreach (childmodel child in family.Childrens)
+            {
+                sqliteConnection.Update(child);
+            }
+            if (family.Childrens.Count>0)
+                sqliteConnection.UpdateWithChildren(family);
 
 
             if (result == 1)
